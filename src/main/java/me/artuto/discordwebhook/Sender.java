@@ -25,14 +25,15 @@ import java.io.IOException;
 
 public class Sender
 {
-    public static void playerJoin(Player player, Server server, String url)
-    {
-        if(!(Webhook.checkUrl(url)))
+    private static void sendMessage(String url, String message) {
+        if(!(Webhook.checkUrl(url))) {
             return;
+        }
 
+        Response response = null;
         try
         {
-            JSONObject obj = new JSONObject().put("content", "**"+player.getName()+"** Joined the server! Online count: **"+server.getOnlinePlayers().size()+"/"+server.getMaxPlayers()+"**");
+            JSONObject obj = new JSONObject().put("content", message);
 
             OkHttpClient client = new OkHttpClient();
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toString());
@@ -41,84 +42,43 @@ public class Sender
                     .post(body)
                     .build();
 
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
         }
         catch(IOException e)
         {
             Webhook.logError(e);
+        }
+        finally {
+            if (response != null) {
+                response.close();
+            }
         }
     }
 
+    public static void playerJoin(Player player, Server server, String url)
+    {
+        Sender.sendMessage(url, "**"+player.getName()+"** Joined the server! Online count: **"+server.getOnlinePlayers().size()+"/"+server.getMaxPlayers()+"**");
+    }
+
+
     public static void playerLeave(Player player, Server server, String url)
     {
-        if(!(Webhook.checkUrl(url)))
-            return;
+        long count = server.getOnlinePlayers().size()-1;
+        Sender.sendMessage(url, "**"+player.getName()+"** Left the server! Online count: **"+count+"/"+server.getMaxPlayers()+"**");
+    }
 
-        try
-        {
-            long count = server.getOnlinePlayers().size()-1;
-            JSONObject obj = new JSONObject().put("content", "**"+player.getName()+"** Left the server! Online count: **"+count+"/"+server.getMaxPlayers()+"**");
-
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toString());
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-        }
-        catch(IOException e)
-        {
-            Webhook.logError(e);
-        }
+    public static void externalIP(String ipAddress, String url)
+    {
+        Sender.sendMessage(url, "Server External IP address: **"+ipAddress+"**");
     }
 
     public static void startup(Server server, String url)
     {
-        if(!(Webhook.checkUrl(url)))
-            return;
-
-        try
-        {
-            JSONObject obj = new JSONObject().put("content", "The server is online! Max players: **"+server.getMaxPlayers()+"**");
-
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toString());
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-        }
-        catch(IOException e)
-        {
-            Webhook.logError(e);
-        }
+        Sender.sendMessage(url,  "The server is online! Max players: **"+server.getMaxPlayers()+"**");
     }
 
     public static void shutdown(Server server, String url)
     {
-        if(!(Webhook.checkUrl(url)))
-            return;
-
-        try
-        {
-            JSONObject obj = new JSONObject().put("content", "The server is going offline! Online players: **"+server.getOnlinePlayers().size()+"**");
-
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toString());
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-        }
-        catch(IOException e)
-        {
-            Webhook.logError(e);
-        }
+        Sender.sendMessage(url,  "The server is going offline! Online players: **"+server.getOnlinePlayers().size()+"**");
     }
 }

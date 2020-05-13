@@ -30,7 +30,7 @@ public class CommandHandler implements CommandExecutor
         {
             if(args.length==0)
             {
-                executor.sendMessage(ChatColor.DARK_BLUE+"-====== Webhook Help ======-"+ChatColor.RESET +
+                executor.sendMessage(ChatColor.DARK_BLUE+"-====== Discord Webhook Help ======-"+ChatColor.RESET +
                         "\n/webhook about - Shows information about the plugin" +
                         "\n/webhook help - Shows this message");
             }

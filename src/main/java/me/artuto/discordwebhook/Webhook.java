@@ -17,6 +17,12 @@
 package me.artuto.discordwebhook;
 
 import me.artuto.discordwebhook.loader.Config;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import java.io.Reader;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("WeakerAccess")
@@ -35,11 +41,19 @@ public class Webhook extends JavaPlugin
         saveConfig();
 
         if(config.getUrl().isEmpty())
+        {
             getServer().getLogger().warning("The webhook URL is not configured!");
+        }
 
         this.getCommand("webhook").setExecutor(cmdHandler);
         getServer().getPluginManager().registerEvents(new EventListener(config), this);
 
+        // Checks the server's external IP and announces it
+        if (config.getEnabledEvents().indexOf("externalIP") > -1) {
+            String externalIP = this.getExternalIP(config.getIPCheckUrl());
+            getServer().getLogger().info("External IP: " + externalIP);
+            Sender.externalIP(externalIP, config.getUrl());
+        }
     }
 
     @Override
@@ -49,11 +63,46 @@ public class Webhook extends JavaPlugin
         getServer().getScheduler().cancelTasks(this);
     }
 
+    public String getExternalIP(String ipCheckUrl) {
+        String address = null;
+        Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(ipCheckUrl)
+                    .get()
+                    .build();
+
+            response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                StringBuilder strBuilder = new StringBuilder();
+                char[] buffer = new char[128];
+                Reader reader = response.body().charStream();
+                int len = -1;
+                while ((len = reader.read(buffer)) > -1) {
+                    strBuilder.append(buffer, 0, len);
+                }
+                address = strBuilder.toString();
+            }
+
+        } catch (Exception ex) {
+            logError(ex);
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+        }
+        return address;
+    }
+
+
     public static void logError(Exception e)
     {
         plugin.getServer().getLogger().severe("Error with DiscordWebhook "+e);
         e.printStackTrace();
     }
+
 
     public static boolean checkUrl(String url)
     {

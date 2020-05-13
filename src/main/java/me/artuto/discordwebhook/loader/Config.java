@@ -16,6 +16,9 @@
  */
 package me.artuto.discordwebhook.loader;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config
@@ -26,11 +29,24 @@ public class Config
     {
         this.config = config;
         config.addDefault("webhookUrl", "https://canary.discordapp.com/api/webhooks");
+        config.addDefault("ipCheckUrl", "https://api.ipify.org");
+        config.addDefault("enabledEvents",
+            Arrays.asList(new String[] { "playerJoin", "playerQuit", "externalIP",
+            "pluginDisable", "pluginEnable" }));
         config.options().copyDefaults(true);
     }
 
     public String getUrl()
     {
         return config.getString("webhookUrl");
+    }
+
+    public String getIPCheckUrl()
+    {
+        return config.getString("ipCheckUrl");
+    }
+
+    public List<String> getEnabledEvents() {
+        return config.getStringList("enabledEvents");
     }
 }

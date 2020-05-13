@@ -27,6 +27,8 @@ import org.bukkit.event.server.PluginDisableEvent;
 @SuppressWarnings("WeakerAccess")
 public class EventListener implements Listener
 {
+    static final String PLUGIN_NAME = "DiscordWebhook";
+
     private final Config config;
 
     public EventListener(Config config)
@@ -37,30 +39,42 @@ public class EventListener implements Listener
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        event.getPlayer().getServer().getLogger().info("A player joined the server! Sending an update to Discord...");
-        Sender.playerJoin(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+        if (this.config.getEnabledEvents().indexOf("playerJoin") > -1) {
+            event.getPlayer().getServer().getLogger().info("A player joined the server! Sending an update to Discord...");
+            Sender.playerJoin(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        event.getPlayer().getServer().getLogger().info("A player left the server! Sending an update to Discord...");
-        Sender.playerLeave(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+        if (this.config.getEnabledEvents().indexOf("playerQuit") > -1) {
+            event.getPlayer().getServer().getLogger().info("A player left the server! Sending an update to Discord...");
+            Sender.playerLeave(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+        }
     }
 
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event)
     {
-        if(!(event.getPlugin().getName().equals("DiscordWebhook")))
-            return;
-        Sender.startup(event.getPlugin().getServer(), config.getUrl());
+        if (this.config.getEnabledEvents().indexOf("pluginEnable") > -1) {
+            if(!(event.getPlugin().getName().equals(PLUGIN_NAME)))
+            {
+                return;
+            }
+            Sender.startup(event.getPlugin().getServer(), config.getUrl());
+        }
     }
 
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event)
     {
-        if(!(event.getPlugin().getName().equals("DiscordWebhook")))
-            return;
+        if (this.config.getEnabledEvents().indexOf("pluginDisable") > -1) {
+            if(!(event.getPlugin().getName().equals(PLUGIN_NAME)))
+            {
+                return;
+            }
             Sender.shutdown(event.getPlugin().getServer(), config.getUrl());
+        }
     }
 }

@@ -24,6 +24,35 @@ Set the URL to the one given to you by Discord and then restart the server.
 At this point you should see your first message in the Discord channel you
 created the webhook for.
 
+A sample configuration looks as follows:
+
+```yaml
+ipCheckUrl: https://api.ipify.org
+webhookUrl:
+enabledEvents:
+ - playerJoin
+ - playerQuit
+ - externalIP
+ - pluginDisable
+ - pluginEnable
+```
+
+The settings are as follows:
+
+ - **ipCheckUrl**: The URL of the server to call to get external IP. The
+   server should return a plain text response. Pay attention as to whether
+   the contents return are an IPv4 or IPv6 address, based on your usage
+   context.
+ - **webhookUrl**: The URL of the webhook that was provided by your Discord
+   channel settings.
+ - **enabledEvents**: Which of the supported events the plugin should act
+   on and send to Discord.
+   - **playerJoin**: The name of the player joining and slot usage
+   - **playerQuit**: The name of the player quiting and slot usage
+   - **externalIP**: The external IP of the server
+   - **pluginDisable**: Announcing the server is going offline
+   - **pluginEnable**: Announcing the server has come online
+
 ## How to Build
 
 If you are looking to make changes, then you'll need to get both the JDK
