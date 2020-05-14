@@ -1,8 +1,12 @@
 # DiscordWebhook
 
-If you are looking for the binary version of the plugin, just head over
-to https://www.spigotmc.org/resources/discord-webhook.51537/
+This is a fork of [Artuto's DiscordWebhook](https://www.spigotmc.org/resources/discord-webhook.51537/),
+taking things in new directions.
 
+The plugin provides the functionality of reacting to a certain range
+of server events and then calling a Discord webhook. While other
+webhooks could be called, the payload is adapted is what Discord is
+expecting.
 
 ## How to Install
 
@@ -28,7 +32,7 @@ A sample configuration looks as follows:
 
 ```yaml
 ipCheckUrl: https://api.ipify.org
-webhookUrl:
+webhookUrl: https://canary.discordapp.com/api/webhooks
 enabledEvents:
  - playerJoin
  - playerQuit

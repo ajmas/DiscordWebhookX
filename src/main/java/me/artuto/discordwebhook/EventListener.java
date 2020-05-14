@@ -42,6 +42,7 @@ public class EventListener implements Listener
         if (this.config.getEnabledEvents().indexOf("playerJoin") > -1) {
             event.getPlayer().getServer().getLogger().info("A player joined the server! Sending an update to Discord...");
             Sender.playerJoin(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+            event.getPlayer().sendMessage("Welcome " + event.getPlayer().getDisplayName());
         }
     }
 

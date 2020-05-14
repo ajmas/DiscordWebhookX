@@ -74,7 +74,7 @@ public class Sender
 
     public static void startup(Server server, String url)
     {
-        Sender.sendMessage(url,  "The server is online! Max players: **"+server.getMaxPlayers()+"**");
+        Sender.sendMessage(url,  "The server is online! Running " + server.getVersion() + ". Max players: **"+server.getMaxPlayers()+"**");
     }
 
     public static void shutdown(Server server, String url)

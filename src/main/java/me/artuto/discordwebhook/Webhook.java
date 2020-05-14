@@ -26,14 +26,21 @@ import java.io.Reader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("WeakerAccess")
-public class Webhook extends JavaPlugin
+public class Webhook extends JavaPlugin implements Runnable
 {
     public static Webhook plugin;
+    private String externalIP;
+    private String ipCheckUrl;
+    private String discordUrl;
+    private boolean enabled;
+    private Thread taskThread;
+    private long taskInterval = 900000;
 
     @Override
     public void onEnable()
     {
         plugin = this;
+        this.enabled = true;
 
         plugin.getServer().getLogger().info(String.format("Enabling DiscordWebhook V.%s...", Const.VERSION));
         CommandHandler cmdHandler = new CommandHandler();
@@ -48,25 +55,38 @@ public class Webhook extends JavaPlugin
         this.getCommand("webhook").setExecutor(cmdHandler);
         getServer().getPluginManager().registerEvents(new EventListener(config), this);
 
+        this.discordUrl = config.getUrl();
+
         // Checks the server's external IP and announces it
         if (config.getEnabledEvents().indexOf("externalIP") > -1) {
-            String externalIP = this.getExternalIP(config.getIPCheckUrl());
-            getServer().getLogger().info("External IP: " + externalIP);
-            Sender.externalIP(externalIP, config.getUrl());
+            this.ipCheckUrl = config.getIPCheckUrl();
+            this.taskThread = new Thread(this, "DiscordWebookTasks");
+            this.taskThread.start();
         }
     }
 
     @Override
     public void onDisable()
     {
+        this.enabled = false;
+
+        // interupt the thread if it is running
+        if (this.taskThread != null) {
+            this.taskThread.interrupt();
+        }
+
         plugin.getLogger().info(String.format("Disabling DiscordWebhook V.%s...", Const.VERSION));
         getServer().getScheduler().cancelTasks(this);
+
+
     }
 
-    public String getExternalIP(String ipCheckUrl) {
+    public String getExternalIP(String ipCheckUrl)
+    {
         String address = null;
         Response response = null;
-        try {
+        try
+        {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(ipCheckUrl)
@@ -75,7 +95,8 @@ public class Webhook extends JavaPlugin
 
             response = client.newCall(request).execute();
 
-            if (response.isSuccessful()) {
+            if (response.isSuccessful())
+            {
                 StringBuilder strBuilder = new StringBuilder();
                 char[] buffer = new char[128];
                 Reader reader = response.body().charStream();
@@ -85,11 +106,15 @@ public class Webhook extends JavaPlugin
                 }
                 address = strBuilder.toString();
             }
-
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logError(ex);
-        } finally {
-            if (response != null) {
+        }
+        finally
+        {
+            if (response != null)
+            {
                 response.close();
             }
         }
@@ -108,9 +133,34 @@ public class Webhook extends JavaPlugin
     {
         if(url.trim().isEmpty() || url.trim().equals("https://canary.discordapp.com/api/webhooks"))
         {
-            plugin.getServer().getLogger().severe("The Webhook URL is empty!");
+            plugin.getLogger().severe("The Webhook URL is empty!");
             return false;
         }
-        else return true;
+
+        return true;
+    }
+
+    @Override
+    public void run()
+    {
+        while (this.enabled) {
+            try
+            {
+                String newExternalIP = this.getExternalIP(this.ipCheckUrl);
+                if (newExternalIP != this.externalIP) {
+                    this.externalIP = newExternalIP;
+                    plugin.getLogger().info("External IP: " + this.externalIP);
+                    Sender.externalIP(externalIP, this.discordUrl);
+                }
+
+                // sleep for 15 minutes
+                Thread.sleep(this.taskInterval);
+            }
+            catch (InterruptedException ex)
+            {
+                // ignored
+            }
+        }
+        plugin.getLogger().info("Stopping periodic Discord Webhook tasks");
     }
 }
