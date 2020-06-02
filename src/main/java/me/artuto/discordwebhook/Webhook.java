@@ -147,7 +147,7 @@ public class Webhook extends JavaPlugin implements Runnable
             try
             {
                 String newExternalIP = this.getExternalIP(this.ipCheckUrl);
-                if (newExternalIP != this.externalIP) {
+                if (!newExternalIP.equals(this.externalIP)) {
                     this.externalIP = newExternalIP;
                     plugin.getLogger().info("External IP: " + this.externalIP);
                     Sender.externalIP(externalIP, this.discordUrl);

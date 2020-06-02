@@ -18,5 +18,5 @@ package me.artuto.discordwebhook;
 
 public class Const
 {
-    public static String VERSION = "1.0.0";
+    public static String VERSION = "2.0.1";
 }

@@ -12,9 +12,10 @@ expecting.
 
 Assuming you are installing from a build:
 
-You will first need to have a [Spigot](https://www.spigotmc.org/)
-Minecraft server running. Then copy the following JAR to the Spigot
-build folder:
+You will first need to have a Bukkit compatible Minecraft server
+running, such as [Spigot](https://www.spigotmc.org/) or
+[PaperMC](https://papermc.io/). Then copy the following JAR to the plugin
+folder of your server:
 
 DiscordWebhook-Spigot-1.0.1-jar-with-dependencies.jar
 
