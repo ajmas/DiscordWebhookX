@@ -24,7 +24,7 @@ running, such as [Spigot](https://www.spigotmc.org/) or
 [PaperMC](https://papermc.io/). Then copy the following JAR to the plugin
 folder of your server:
 
-DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar
+DiscordWebhook-Spigot-2.1.1-jar-with-dependencies.jar
 
 ## How to Configure
 
@@ -101,11 +101,11 @@ mvn package
 ```
 
 Results will be in the `target` folder, with base name
-`DiscordWebhook-Spigot`. Assuming the current marked release is 2.1.0
+`DiscordWebhook-Spigot`. Assuming the current marked release is 2.1.1
 (see version value in pom.xml), you'll have two files:
 
-  - `DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar`
-  - `DiscordWebhook-Spigot-2.1.0.jar`
+  - `DiscordWebhook-Spigot-2.1.1-jar-with-dependencies.jar`
+  - `DiscordWebhook-Spigot-2.1.1.jar`
 
   You should use the first of the files in your Minecraft server's plugin
   folder.
