@@ -21,29 +21,42 @@ import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class Config
-{
+import me.artuto.discordwebhook.Const;
+
+public class Config {
+
     private final FileConfiguration config;
 
-    public Config(FileConfiguration config)
-    {
+    public Config(FileConfiguration config) {
         this.config = config;
         config.addDefault("webhookUrl", "https://canary.discordapp.com/api/webhooks");
         config.addDefault("ipCheckUrl", "https://api.ipify.org");
+        config.addDefault("serverName", "");
+        config.addDefault("externalPort", Const.DEFAULT_PORT);
         config.addDefault("enabledEvents",
             Arrays.asList(new String[] { "playerJoin", "playerQuit", "externalIP",
             "pluginDisable", "pluginEnable" }));
         config.options().copyDefaults(true);
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return config.getString("webhookUrl");
     }
 
-    public String getIPCheckUrl()
-    {
+    public String getIPCheckUrl() {
         return config.getString("ipCheckUrl");
+    }
+
+    public String getServerName() {
+        String name = config.getString("serverName");
+        if (name == null || name.trim().length() == 0 ) {
+            name = null;
+        }
+        return name;
+    }
+
+    public int getExternalPort() {
+        return config.getInt("externalPort");
     }
 
     public List<String> getEnabledEvents() {

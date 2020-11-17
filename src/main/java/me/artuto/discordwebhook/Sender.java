@@ -25,8 +25,8 @@ import java.io.IOException;
 
 public class Sender
 {
-    private static void sendMessage(String url, String message) {
-        if(!(Webhook.checkUrl(url))) {
+    private static void sendMessage(String discordUrl, String message) {
+        if(!(Webhook.checkUrl(discordUrl))) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class Sender
             OkHttpClient client = new OkHttpClient();
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toString());
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(discordUrl)
                     .post(body)
                     .build();
 
@@ -55,30 +55,66 @@ public class Sender
         }
     }
 
-    public static void playerJoin(Player player, Server server, String url)
+    public static void playerJoin(Player player, Server server, String serverName, String discordUrl)
     {
-        Sender.sendMessage(url, "**"+player.getName()+"** Joined the server! Online count: **"+server.getOnlinePlayers().size()+"/"+server.getMaxPlayers()+"**");
+        if (serverName != null) {
+            Sender.sendMessage(discordUrl, "**" + player.getName() + "** Joined the MC server! **"
+                + serverName + "**. Online count: **" + server.getOnlinePlayers().size()
+                + "/" + server.getMaxPlayers() + "**");
+        } else {
+            Sender.sendMessage(discordUrl, "**"
+                + player.getName() + "** Joined the server! Online count: **"
+                + server.getOnlinePlayers().size() + "/" + server.getMaxPlayers() + "**");
+        }
     }
 
 
-    public static void playerLeave(Player player, Server server, String url)
+    public static void playerLeave(Player player, Server server, String serverName, String discordUrl)
     {
-        long count = server.getOnlinePlayers().size()-1;
-        Sender.sendMessage(url, "**"+player.getName()+"** Left the server! Online count: **"+count+"/"+server.getMaxPlayers()+"**");
+        long count = server.getOnlinePlayers().size() - 1;
+        if (serverName != null) {
+            Sender.sendMessage(discordUrl, "**" + player.getName() + "** Left the MC server **"
+                + serverName + "**! Online count: **" + count + "/"
+                + server.getMaxPlayers() + "**");
+        } else {
+            Sender.sendMessage(discordUrl, "**" + player.getName()
+                + "** Left the server! Online count: **" + count + "/"
+                + server.getMaxPlayers() + "**");
+        }
     }
 
-    public static void externalIP(String ipAddress, String url)
+    public static void externalAddress(String address, String name, String serverVersion, String discordUrl)
     {
-        Sender.sendMessage(url, "Server External IP address: **"+ipAddress+"**");
+        if (name != null) {
+            Sender.sendMessage(discordUrl, "MC server, **"  + name
+                + "** (" + serverVersion + "), address is **" + address + "**");
+        } else {
+            Sender.sendMessage(discordUrl, "MC server ("
+                + serverVersion + ") address is **" + address + "**");
+        }
     }
 
-    public static void startup(Server server, String url)
+    public static void startup(Server server, String name, String discordUrl)
     {
-        Sender.sendMessage(url,  "The server is online! Running " + server.getVersion() + ". Max players: **"+server.getMaxPlayers()+"**");
+        if (name != null) {
+            Sender.sendMessage(discordUrl,  "The Minecraft server  **"
+                + name + "** is online! Running **"  +  server.getVersion()
+                +  "**. Max players: **" + server.getMaxPlayers() + "**");
+        } else {
+            Sender.sendMessage(discordUrl,  "The Minecraft server"
+                + " is online! Running "  +  server.getVersion()
+                +  ". Max players: **" + server.getMaxPlayers() + "**");
+        }
     }
 
-    public static void shutdown(Server server, String url)
+    public static void shutdown(Server server, String name, String discordUrl)
     {
-        Sender.sendMessage(url,  "The server is going offline! Online players: **"+server.getOnlinePlayers().size()+"**");
+        if (name != null) {
+            Sender.sendMessage(discordUrl,  "The MC server **"
+                + name + "** is going offline!");
+        } else {
+            Sender.sendMessage(discordUrl,  "The MC server is going offline! Online players: **"
+                + server.getOnlinePlayers().size() + "**");
+        }
     }
 }

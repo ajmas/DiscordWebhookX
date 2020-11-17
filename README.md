@@ -17,7 +17,7 @@ running, such as [Spigot](https://www.spigotmc.org/) or
 [PaperMC](https://papermc.io/). Then copy the following JAR to the plugin
 folder of your server:
 
-DiscordWebhook-Spigot-1.0.1-jar-with-dependencies.jar
+DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar
 
 ## How to Configure
 
@@ -34,6 +34,8 @@ A sample configuration looks as follows:
 ```yaml
 ipCheckUrl: https://api.ipify.org
 webhookUrl: https://canary.discordapp.com/api/webhooks
+externalPort: 25565
+serverName: My Server Name
 enabledEvents:
  - playerJoin
  - playerQuit
@@ -50,6 +52,11 @@ The settings are as follows:
    context.
  - **webhookUrl**: The URL of the webhook that was provided by your Discord
    channel settings.
+ - **externalPort**: The external port to announce. If the port number is
+   25565, then it will not be announced, as this is the default port
+   Minecraft clients are looking for.
+ - **serverName**: The name to use for your Minecraft server. If the value is
+   empty, or not provided, then it will be ignored.
  - **enabledEvents**: Which of the supported events the plugin should act
    on and send to Discord.
    - **playerJoin**: The name of the player joining and slot usage
@@ -73,3 +80,13 @@ Once you have them set up you'll need to run Maven:
 ```
 mvn package
 ```
+
+Results will be in the `target` folder, with base name
+`DiscordWebhook-Spigot`. Assuming the current marked release is 2.0.1,
+you'll have two files:
+
+  - `DiscordWebhook-Spigot-2.0.1-jar-with-dependencies.jar`
+  - `DiscordWebhook-Spigot-2.0.1.jar`
+
+  You should use the first of file in your Minecraft server's plugin
+  folder.

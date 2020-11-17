@@ -28,7 +28,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 @SuppressWarnings("WeakerAccess")
 public class Webhook extends JavaPlugin implements Runnable
 {
+    public static final int DEFAULT_PORT = Const.DEFAULT_PORT;
+
     public static Webhook plugin;
+    private String serverName;
+    private int serverPort = DEFAULT_PORT;
     private String externalIP;
     private String ipCheckUrl;
     private String discordUrl;
@@ -56,6 +60,8 @@ public class Webhook extends JavaPlugin implements Runnable
         getServer().getPluginManager().registerEvents(new EventListener(config), this);
 
         this.discordUrl = config.getUrl();
+        this.serverName = config.getServerName();
+        this.serverPort = config.getExternalPort();
 
         // Checks the server's external IP and announces it
         if (config.getEnabledEvents().indexOf("externalIP") > -1) {
@@ -150,7 +156,14 @@ public class Webhook extends JavaPlugin implements Runnable
                 if (!newExternalIP.equals(this.externalIP)) {
                     this.externalIP = newExternalIP;
                     plugin.getLogger().info("External IP: " + this.externalIP);
-                    Sender.externalIP(externalIP, this.discordUrl);
+
+                    String address = this.externalIP;
+                    if (this.serverPort != Webhook.DEFAULT_PORT) {
+                        address += ":" + this.serverPort;
+                    }
+
+                    String serverVersion = this.getServer().getVersion();
+                    Sender.externalAddress(address, this.serverName, serverVersion, this.discordUrl);
                 }
 
                 // sleep for 15 minutes

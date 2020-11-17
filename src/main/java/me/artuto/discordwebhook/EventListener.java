@@ -41,7 +41,7 @@ public class EventListener implements Listener
     {
         if (this.config.getEnabledEvents().indexOf("playerJoin") > -1) {
             event.getPlayer().getServer().getLogger().info("A player joined the server! Sending an update to Discord...");
-            Sender.playerJoin(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+            Sender.playerJoin(event.getPlayer(), event.getPlayer().getServer(), this.config.getServerName(), config.getUrl());
             event.getPlayer().sendMessage("Welcome " + event.getPlayer().getDisplayName());
         }
     }
@@ -51,7 +51,7 @@ public class EventListener implements Listener
     {
         if (this.config.getEnabledEvents().indexOf("playerQuit") > -1) {
             event.getPlayer().getServer().getLogger().info("A player left the server! Sending an update to Discord...");
-            Sender.playerLeave(event.getPlayer(), event.getPlayer().getServer(), config.getUrl());
+            Sender.playerLeave(event.getPlayer(), event.getPlayer().getServer(), this.config.getServerName(), config.getUrl());
         }
     }
 
@@ -63,7 +63,7 @@ public class EventListener implements Listener
             {
                 return;
             }
-            Sender.startup(event.getPlugin().getServer(), config.getUrl());
+            Sender.startup(event.getPlugin().getServer(), this.config.getServerName(), config.getUrl());
         }
     }
 
@@ -75,7 +75,8 @@ public class EventListener implements Listener
             {
                 return;
             }
-            Sender.shutdown(event.getPlugin().getServer(), config.getUrl());
+
+            Sender.shutdown(event.getPlugin().getServer(), config.getServerName(), config.getUrl());
         }
     }
 }
