@@ -21,29 +21,25 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class CommandHandler implements CommandExecutor
-{
+public class CommandHandler implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender executor, Command cmd, String label, String[] args)
-    {
-        if (cmd.getName().toLowerCase().equals("webhook"))
-        {
-            if(args.length==0)
-            {
-                executor.sendMessage(ChatColor.DARK_BLUE+"-====== Discord Webhook Help ======-"+ChatColor.RESET +
-                        "\n/webhook about - Shows information about the plugin" +
-                        "\n/webhook help - Shows this message");
+    public boolean onCommand(CommandSender executor, Command cmd, String label, String[] args) {
+        if (cmd.getName().toLowerCase().equals("webhook")) {
+            if(args.length==0) {
+                executor.sendMessage(ChatColor.DARK_BLUE  +
+                    "-====== Discord Webhook Help ======-" + ChatColor.RESET  +
+                    "\n/webhook about - Shows information about the plugin"  +
+                    "\n/webhook help - Shows this message");
             }
-            else if(args[0].equals("about"))
-            {
-                executor.sendMessage("Plugin made by "+ChatColor.GREEN+"Artuto" +
-                        ChatColor.RESET+"\nPlugin Version: "+ChatColor.GREEN+Const.VERSION+ChatColor.RESET +
-                        "\nDonations are accepted! "+ChatColor.AQUA+"https://paypal.me/artuto");
+            else if(args[0].equals("about")) {
+                executor.sendMessage("Plugin made by " + ChatColor.GREEN +
+                    "Artuto and continued by ajmas" +
+                    ChatColor.RESET + "\nPlugin Version: " +
+                    ChatColor.GREEN + Const.VERSION + ChatColor.RESET);
             }
-            else if(args[0].equals("help"))
-            {
-                executor.sendMessage(ChatColor.DARK_BLUE+"-====== Webhook Help ======-"+ChatColor.RESET +
-                        "\n/webhook about - Shows information about the plugin" +
+            else if(args[0].equals("help")) {
+                executor.sendMessage(ChatColor.DARK_BLUE + "-====== Webhook Help ======-" + ChatColor.RESET  +
+                        "\n/webhook about - Shows information about the plugin"  +
                         "\n/webhook help - Shows this message");
             }
             return true;

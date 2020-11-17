@@ -1,12 +1,19 @@
-# DiscordWebhook
+# DiscordWebhookX
 
 This is a fork of [Artuto's DiscordWebhook](https://www.spigotmc.org/resources/discord-webhook.51537/),
-taking things in new directions.
+which appears to have been abandoned since 2019. Here we add to new
+features, behaviours and tweaks.
 
 The plugin provides the functionality of reacting to a certain range
 of server events and then calling a Discord webhook. While other
 webhooks could be called, the payload is adapted is what Discord is
 expecting.
+
+Contributions and suggestions are appreciated 😃
+
+## Tested against
+
+Tested to work with MC 1.15.x, 1.16.x.
 
 ## How to Install
 
@@ -23,11 +30,11 @@ DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar
 
 On first launch the server will complain that the "The Webhook URL is empty!".
 At this point modify the new `DiscordWebhook/config.yml` that was created
-in the plugin folder.
+in the `plugins` folder of your server.
 
-Set the URL to the one given to you by Discord and then restart the server.
-At this point you should see your first message in the Discord channel you
-created the webhook for.
+Set the URL to the one given to you by Discord (see below if you aren't sure)
+and then restart the server. At this point you should see your first message
+in the Discord channel you created the webhook for.
 
 A sample configuration looks as follows:
 
@@ -65,6 +72,18 @@ The settings are as follows:
    - **pluginDisable**: Announcing the server is going offline
    - **pluginEnable**: Announcing the server has come online
 
+## Getting the Discord Webhook URL
+
+If you have admin access to your Discord server or guild, the steps are
+as follows (assuming the UI hasn't changed):
+
+ - Next to the text channel, click on the gear icon
+ - Go to the 'integrations' section
+ - Click on 'Create Webhook'
+ - Name your webhook and give it a name
+ - Click on the 'Copy Webhook URL' and use that URL in the `webhookUrl`
+   of your configuration.
+
 ## How to Build
 
 If you are looking to make changes, then you'll need to get both the JDK
@@ -88,5 +107,10 @@ Results will be in the `target` folder, with base name
   - `DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar`
   - `DiscordWebhook-Spigot-2.1.0.jar`
 
-  You should use the first of file in your Minecraft server's plugin
+  You should use the first of the files in your Minecraft server's plugin
   folder.
+
+  ## License
+
+  This project is licensed under GPLv3. See attached [LICENSE](./LICENSE)
+  file for text of the license.
