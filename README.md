@@ -82,11 +82,11 @@ mvn package
 ```
 
 Results will be in the `target` folder, with base name
-`DiscordWebhook-Spigot`. Assuming the current marked release is 2.0.1,
-you'll have two files:
+`DiscordWebhook-Spigot`. Assuming the current marked release is 2.1.0
+(see version value in pom.xml), you'll have two files:
 
-  - `DiscordWebhook-Spigot-2.0.1-jar-with-dependencies.jar`
-  - `DiscordWebhook-Spigot-2.0.1.jar`
+  - `DiscordWebhook-Spigot-2.1.0-jar-with-dependencies.jar`
+  - `DiscordWebhook-Spigot-2.1.0.jar`
 
   You should use the first of file in your Minecraft server's plugin
   folder.
