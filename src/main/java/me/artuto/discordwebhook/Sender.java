@@ -117,4 +117,8 @@ public class Sender
                 + server.getOnlinePlayers().size() + "**");
         }
     }
+
+    public static void sendPlayerMessage(Server server, String player, String message, String discordUrl) {
+        Sender.sendMessage(discordUrl,  "message from **" + player + "**: " + message);
+    }
 }

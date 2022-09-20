@@ -1,7 +1,7 @@
 # DiscordWebhookX
 
 This is a fork of [Artuto's DiscordWebhook](https://www.spigotmc.org/resources/discord-webhook.51537/),
-which appears to have been abandoned since 2019. Here we add to new
+which has been abandoned since 2019. Here we add new
 features, behaviours and tweaks.
 
 The plugin provides the functionality of reacting to a certain range
@@ -13,7 +13,8 @@ Contributions and suggestions are appreciated 😃
 
 ## Tested against
 
-Tested to work with MC 1.15.x, 1.16.x.
+ - Pre 2.2.0 version: Tested to work with MC 1.15.x, 1.16.x, 1.17.x, 1,18.x
+ - 2.2.0 and up: Tested to work with MC 1.19.x
 
 ## How to Install
 
@@ -24,7 +25,16 @@ running, such as [Spigot](https://www.spigotmc.org/) or
 [PaperMC](https://papermc.io/). Then copy the following JAR to the plugin
 folder of your server:
 
-DiscordWebhook-Spigot-2.1.1-jar-with-dependencies.jar
+DiscordWebhook-Spigot-2.2.0-jar-with-dependencies.jar
+
+## How to use
+
+By default, all events and commands are enabled, though you should still
+configure the plugin for your server. See "[How to Configure](#how-to-configure)"
+section below for details.
+
+Help for each command is provided in game, or via the server console, via
+`/discordmc help`.
 
 ## How to Configure
 
@@ -49,6 +59,9 @@ enabledEvents:
  - externalIP
  - pluginDisable
  - pluginEnable
+enabledCommands:
+ - msg
+ - location-msg
 ```
 
 The settings are as follows:
@@ -71,6 +84,11 @@ The settings are as follows:
    - **externalIP**: The external IP of the server
    - **pluginDisable**: Announcing the server is going offline
    - **pluginEnable**: Announcing the server has come online
+ - **enabledCommands**: Which of the sub commands are enabled
+   - **msg**: Allows the player to send a message to the Discord channel
+   - **location-msg**: Sends the location of the player to the Discord channel,
+     as if they wrote it
+
 
 ## Getting the Discord Webhook URL
 
@@ -101,14 +119,15 @@ mvn package
 ```
 
 Results will be in the `target` folder, with base name
-`DiscordWebhook-Spigot`. Assuming the current marked release is 2.1.1
+`DiscordWebhook-Spigot`. Assuming the current marked release is 2.2.0
 (see version value in pom.xml), you'll have two files:
 
-  - `DiscordWebhook-Spigot-2.1.1-jar-with-dependencies.jar`
-  - `DiscordWebhook-Spigot-2.1.1.jar`
+  - `DiscordWebhook-Spigot-2.2.0-jar-with-dependencies.jar`
+  - `DiscordWebhook-Spigot-2.2.0.jar`
 
   You should use the first of the files in your Minecraft server's plugin
-  folder.
+  folder. The second one will not work, since it is missing the necessary
+  dependencies.
 
   ## License
 

@@ -47,16 +47,16 @@ public class Webhook extends JavaPlugin implements Runnable
         this.enabled = true;
 
         plugin.getServer().getLogger().info(String.format("Enabling DiscordWebhook V.%s...", Const.VERSION));
-        CommandHandler cmdHandler = new CommandHandler();
         Config config = new Config(this.getConfig());
         saveConfig();
+        CommandHandler cmdHandler = new CommandHandler(config);
 
         if(config.getUrl().isEmpty())
         {
             getServer().getLogger().warning("The webhook URL is not configured!");
         }
 
-        this.getCommand("webhook").setExecutor(cmdHandler);
+        this.getCommand(Const.COMMAND_NAME).setExecutor(cmdHandler);
         getServer().getPluginManager().registerEvents(new EventListener(config), this);
 
         this.discordUrl = config.getUrl();

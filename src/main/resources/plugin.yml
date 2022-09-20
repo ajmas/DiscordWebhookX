@@ -5,6 +5,6 @@ author: Artuto
 website: artuto.tk
 main: me.artuto.discordwebhook.Webhook
 commands:
- webhook:
+ discordmc:
    description: Main command
-   usage: Use /webhook help
+   usage: Use /discordmc help

@@ -24,7 +24,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import me.artuto.discordwebhook.Const;
 
 public class Config {
-
     private final FileConfiguration config;
 
     public Config(FileConfiguration config) {
@@ -33,6 +32,7 @@ public class Config {
         config.addDefault("ipCheckUrl", "https://api.ipify.org");
         config.addDefault("serverName", "");
         config.addDefault("externalPort", Const.DEFAULT_PORT);
+        config.addDefault("enabledCommmands", new String[] { Const.SUBCOMMAND_MSG });
         config.addDefault("enabledEvents",
             Arrays.asList(new String[] { "playerJoin", "playerQuit", "externalIP",
             "pluginDisable", "pluginEnable" }));
@@ -61,5 +61,17 @@ public class Config {
 
     public List<String> getEnabledEvents() {
         return config.getStringList("enabledEvents");
+    }
+
+    public boolean isEventEnabled(String command) {
+        return getEnabledEvents().indexOf(command) > -1;
+    }
+
+    public List<String> getEnabledCommands() {
+        return config.getStringList("enabledCommands");
+    }
+
+    public boolean isCommandEnabled(String command) {
+        return getEnabledCommands().indexOf(command) > -1;
     }
 }

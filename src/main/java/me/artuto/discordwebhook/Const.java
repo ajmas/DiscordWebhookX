@@ -18,6 +18,11 @@ package me.artuto.discordwebhook;
 
 public class Const
 {
-    public static final String VERSION = "2.1.1";
+    public static final String VERSION = "2.2.0";
     public static final int DEFAULT_PORT = 25565;
+    public static final String COMMAND_NAME = "discordmc";
+    public static final String SUBCOMMAND_HELP = "help";
+    public static final String SUBCOMMAND_ABOUT = "about";
+    public static final String SUBCOMMAND_LOCATION_MSG = "location-msg";
+    public static final String SUBCOMMAND_MSG = "msg";
 }
