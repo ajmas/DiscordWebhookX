@@ -32,7 +32,7 @@ public class Config {
         config.addDefault("ipCheckUrl", "https://api.ipify.org");
         config.addDefault("serverName", "");
         config.addDefault("externalPort", Const.DEFAULT_PORT);
-        config.addDefault("enabledCommmands", new String[] { Const.SUBCOMMAND_MSG });
+        config.addDefault("enabledCommmands", new String[] { Const.SUBCOMMAND_MSG, Const.SUBCOMMAND_LOCATION_MSG });
         config.addDefault("enabledEvents",
             Arrays.asList(new String[] { "playerJoin", "playerQuit", "externalIP",
             "pluginDisable", "pluginEnable" }));

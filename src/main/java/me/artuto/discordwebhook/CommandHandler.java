@@ -36,6 +36,30 @@ public class CommandHandler implements CommandExecutor {
         this.config = config;
     }
 
+    private String getLocationAsString(Player player, boolean includeWorld) {
+        if (player != null) {
+            Location location = player.getLocation();
+
+            String message = String.format(
+                "%d %d %d",
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ()
+            );
+
+            if (includeWorld) {
+                message += String.format(
+                    " (%s@%s)",
+                    location.getWorld().getName(),
+                    config.getServerName()
+                );
+            }
+
+            return message.toString();
+        }
+        return null;
+    }
+
     @Override
     public boolean onCommand(CommandSender executor, Command cmd, String label, String[] args) {
         if (cmd.getName().toLowerCase().equals(COMMAND_NAME)) {
@@ -43,21 +67,24 @@ public class CommandHandler implements CommandExecutor {
                 StringBuilder output = new StringBuilder();
 
                 output.append(
-                    ChatColor.DARK_BLUE +
+                    ChatColor.LIGHT_PURPLE +
                     "-====== Discord Webhook Help ======-" + ChatColor.RESET  +
-                    "\n/" + COMMAND_NAME + " about - Shows information about the plugin"  +
-                    "\n/" + COMMAND_NAME + " help - Shows this message"
+                    "\n/" + COMMAND_NAME + " " + SUBCOMMAND_ABOUT + " - Shows information about the plugin"  +
+                    "\n/" + COMMAND_NAME + " " + SUBCOMMAND_HELP + "  - Shows this message"
                 );
 
                 if (config.isCommandEnabled(SUBCOMMAND_MSG)) {
                     output.append(
-                        "\n/" + COMMAND_NAME + " msg - Sends a message to the Discord channel"
+                        "\n/" + COMMAND_NAME + " " + SUBCOMMAND_MSG + "   - Sends a message to the Discord channel" +
+                        "\n | Special values:" +
+                        "\n |  - !loc  - substituded for player location" +
+                        "\n |  - !floc - substituded for player location, with world name"
                     );
                 }
 
                 if (config.isCommandEnabled(SUBCOMMAND_LOCATION_MSG)) {
                     output.append(
-                        "\n/" + COMMAND_NAME + " msg - Shares your location with the Discord channel"
+                        "\n/" + COMMAND_NAME + " " + SUBCOMMAND_LOCATION_MSG + " - Shares your location with the Discord channel"
                     );
                 }
 
@@ -70,23 +97,31 @@ public class CommandHandler implements CommandExecutor {
                     ChatColor.GREEN + VERSION + ChatColor.RESET);
             }
             else if(args[0].equals(SUBCOMMAND_MSG) && config.isCommandEnabled(SUBCOMMAND_MSG) && args.length > 1) {
+                for (int i = 1; i < args.length; i++) {
+                    if ("!loc".equals(args[i])) {
+                        if (executor.getServer().getPlayer(executor.getName()) != null) {
+                            Player player = executor.getServer().getPlayer(executor.getName());
+                            args[i] = getLocationAsString(player, false);
+                        }
+                    } else if ("!floc".equals(args[i])) {
+                        if (executor.getServer().getPlayer(executor.getName()) != null) {
+                            Player player = executor.getServer().getPlayer(executor.getName());
+                            args[i] = getLocationAsString(player, true);
+                        }
+                    }
+                }
+
                 String message =  String.join(" ", Arrays.copyOfRange(args, 1, args.length));
                 Sender.sendPlayerMessage(executor.getServer(), executor.getName(), message, config.getUrl());
+                executor.sendMessage("Sent to Discord: " + message);
             }
             else if(args[0].equals(SUBCOMMAND_LOCATION_MSG) && config.isCommandEnabled(SUBCOMMAND_LOCATION_MSG)) {
                 Player player = executor.getServer().getPlayer(executor.getName());
                 if (player != null) {
-                    Location location = player.getLocation();
-
-                    String message = String.format(
-                        "My location is %d, %d, %d (%s@%s)",
-                        location.getBlockX(),
-                        location.getBlockY(),
-                        location.getBlockZ(),
-                        location.getWorld().getName(),
-                        config.getServerName()
-                    );
+                    String message = getLocationAsString(player, true);
+                    message = "My location is: " + message;
                     Sender.sendPlayerMessage(executor.getServer(), executor.getName(), message, config.getUrl());
+                    executor.sendMessage("Sent to Discord: " + message);
                 } else {
                     executor.sendMessage(executor.getName() + " does not have a location");
                 }

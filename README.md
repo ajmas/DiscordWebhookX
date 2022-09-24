@@ -85,7 +85,9 @@ The settings are as follows:
    - **pluginDisable**: Announcing the server is going offline
    - **pluginEnable**: Announcing the server has come online
  - **enabledCommands**: Which of the sub commands are enabled
-   - **msg**: Allows the player to send a message to the Discord channel
+   - **msg**: Allows the player to send a message to the Discord channel. Supported special words during the game:
+     - `!loc`: substituted for location
+     - `!floc`: substituted for full location, included world and server name
    - **location-msg**: Sends the location of the player to the Discord channel,
      as if they wrote it
 
