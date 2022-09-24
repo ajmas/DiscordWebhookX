@@ -18,7 +18,7 @@ package me.artuto.discordwebhook;
 
 public class Const
 {
-    public static final String VERSION = "2.2.0";
+    public static final String VERSION = "2.3.0";
     public static final int DEFAULT_PORT = 25565;
     public static final String COMMAND_NAME = "discordmc";
     public static final String SUBCOMMAND_HELP = "help";
